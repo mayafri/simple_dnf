@@ -11,3 +11,5 @@ Initial Roadmap :
 - [ ] Sorted views
 
 ![](https://raw.githubusercontent.com/hyakosm/simple_dnf/master/screenshot.png)
+
+Requirement : `python3-dnfdaemon`
