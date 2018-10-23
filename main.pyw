@@ -27,6 +27,7 @@ class MyWindow(Gtk.Window):
 		self.show_all()
 
 	def application_close(self, data):
+		self.dnf.Exit()
 		Gtk.main_quit()
 
 	def loading_screen(self):
@@ -59,7 +60,7 @@ class MyWindow(Gtk.Window):
 		thread.daemon = True
 		thread.start()
 
-		packages_treeview = Gtk.TreeView(self.data_store)
+		packages_treeview = Gtk.TreeView.new_with_model(self.data_store)
 		packages_treeview.set_search_column(2)
 
 		renderer_toggle = Gtk.CellRendererToggle()
@@ -83,20 +84,8 @@ class MyWindow(Gtk.Window):
 		self.scrolled = Gtk.ScrolledWindow()
 		self.scrolled.add(packages_treeview)
 
-		self.t_name = Gtk.Label("Name : ")
-		self.name = Gtk.Label("Nom du paquet")
-		self.t_desc = Gtk.Label("Description : ")
-		self.desc = Gtk.Label("Description du paquet")
-
-		self.infobox = Gtk.Grid()
-		self.infobox.attach(self.t_name, 0, 0, 1, 1)
-		self.infobox.attach(self.name, 1, 0, 1, 1)
-		self.infobox.attach(self.t_desc, 0, 1, 1, 1)
-		self.infobox.attach(self.desc, 1, 1, 1, 1)
-
 		self.mainbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
 		self.mainbox.pack_start(self.scrolled, True, True, 0)
-		self.mainbox.pack_start(self.infobox, False, False, 0)
 
 		self.remove(self.spinner)
 		self.add(self.mainbox)
@@ -108,7 +97,7 @@ class MyWindow(Gtk.Window):
 		header_bar.set_show_close_button(1)
 		header_bar.set_title(self.window_title)
 
-		self.apply_button = Gtk.Button("Apply")
+		self.apply_button = Gtk.Button.new_with_label("Apply")
 		self.apply_button.connect("clicked", self.on_apply_clicked)
 		self.apply_button.set_sensitive(False)
 		header_bar.pack_start(self.apply_button)
