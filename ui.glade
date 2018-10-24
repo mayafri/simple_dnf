@@ -2,9 +2,196 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkAboutDialog" id="about_dialog">
+    <property name="can_focus">False</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="deletable">False</property>
+    <property name="program_name">Simple DNF</property>
+    <property name="website">https://github.com/hyakosm/simple_dnf</property>
+    <property name="authors">Hyacinthe Pierre Friedrichs
+https://hyakosm.net</property>
+    <property name="logo_icon_name">system-software-install</property>
+    <property name="license_type">gpl-3-0</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton">
+                <property name="label" translatable="yes">OK</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <signal name="clicked" handler="on_about_closed" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkListStore" id="data_store">
+    <columns>
+      <!-- column-name state -->
+      <column type="gboolean"/>
+      <!-- column-name icon -->
+      <column type="gchararray"/>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name version -->
+      <column type="gchararray"/>
+      <!-- column-name arch -->
+      <column type="gchararray"/>
+      <!-- column-name size -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkWindow" id="window">
+    <property name="width_request">900</property>
+    <property name="height_request">650</property>
+    <property name="can_focus">False</property>
+    <signal name="destroy" handler="on_application_close" swapped="no"/>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="title" translatable="yes">Simple DNF</property>
+        <property name="show_close_button">True</property>
+        <child>
+          <object class="GtkButton" id="apply_button">
+            <property name="label" translatable="yes">Apply</property>
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_apply_clicked" swapped="no"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">About</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_about_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="mainbox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolled">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <property name="propagate_natural_width">True</property>
+            <property name="propagate_natural_height">True</property>
+            <child>
+              <object class="GtkTreeView" id="packages_treeview">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="model">data_store</property>
+                <property name="search_column">2</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection"/>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="transaction_dialog">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">Processing</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="default_width">500</property>
+    <property name="default_height">250</property>
+    <property name="deletable">False</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <object class="GtkLayout">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkSpinner">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="active">True</property>
+          </object>
+          <packing>
+            <property name="x">43</property>
+            <property name="y">87</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkAccelLabel">
+            <property name="width_request">295</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">Please wait, DNF is applying changes.</property>
+          </object>
+          <packing>
+            <property name="x">145</property>
+            <property name="y">87</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkTextBuffer" id="will_be_installed_buf"/>
+  <object class="GtkTextBuffer" id="will_be_removed_buf"/>
   <object class="GtkDialog" id="confirm_dialog">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Do you want to continue ?</property>
+    <property name="title" translatable="yes">Apply the following changes?</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="default_width">400</property>
@@ -136,123 +323,4 @@
       </object>
     </child>
   </object>
-  <object class="GtkListStore" id="data_store">
-    <columns>
-      <!-- column-name state -->
-      <column type="gboolean"/>
-      <!-- column-name icon -->
-      <column type="gchararray"/>
-      <!-- column-name name -->
-      <column type="gchararray"/>
-      <!-- column-name version -->
-      <column type="gchararray"/>
-      <!-- column-name arch -->
-      <column type="gchararray"/>
-      <!-- column-name size -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkWindow" id="window">
-    <property name="width_request">900</property>
-    <property name="height_request">650</property>
-    <property name="can_focus">False</property>
-    <signal name="destroy" handler="on_application_close" swapped="no"/>
-    <child type="titlebar">
-      <object class="GtkHeaderBar" id="header_bar">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="title" translatable="yes">Simple DNF</property>
-        <property name="show_close_button">True</property>
-        <child>
-          <object class="GtkButton" id="apply_button">
-            <property name="label" translatable="yes">Apply</property>
-            <property name="visible">True</property>
-            <property name="sensitive">False</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_apply_clicked" swapped="no"/>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkBox" id="mainbox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="orientation">vertical</property>
-        <property name="spacing">6</property>
-        <child>
-          <object class="GtkScrolledWindow" id="scrolled">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="shadow_type">in</property>
-            <property name="propagate_natural_width">True</property>
-            <property name="propagate_natural_height">True</property>
-            <child>
-              <object class="GtkTreeView" id="packages_treeview">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="model">data_store</property>
-                <property name="search_column">2</property>
-                <child internal-child="selection">
-                  <object class="GtkTreeSelection"/>
-                </child>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkWindow" id="transaction_dialog">
-    <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Processing</property>
-    <property name="resizable">False</property>
-    <property name="modal">True</property>
-    <property name="default_width">500</property>
-    <property name="default_height">250</property>
-    <property name="deletable">False</property>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <object class="GtkLayout">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkSpinner">
-            <property name="width_request">100</property>
-            <property name="height_request">80</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="active">True</property>
-          </object>
-          <packing>
-            <property name="x">43</property>
-            <property name="y">87</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkAccelLabel">
-            <property name="width_request">295</property>
-            <property name="height_request">80</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Please wait, DNF is applying changes.</property>
-          </object>
-          <packing>
-            <property name="x">145</property>
-            <property name="y">87</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkTextBuffer" id="will_be_installed_buf"/>
-  <object class="GtkTextBuffer" id="will_be_removed_buf"/>
 </interface>
