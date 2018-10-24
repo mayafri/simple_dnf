@@ -6,7 +6,8 @@ Initial Roadmap :
 
 - [x] View of available and installed packages
 - [x] Async cache loading
-- [ ] Ability to install / remove
+- [x] Install / remove features
+- [ ] Reposync feature
 - [ ] Detailed view of package
 - [ ] Sorted views
 - [ ] French translation
