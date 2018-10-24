@@ -77,6 +77,7 @@ https://hyakosm.net</property>
     <property name="width_request">900</property>
     <property name="height_request">650</property>
     <property name="can_focus">False</property>
+    <property name="gravity">center</property>
     <signal name="destroy" handler="on_application_close" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
@@ -187,8 +188,7 @@ https://hyakosm.net</property>
       </object>
     </child>
   </object>
-  <object class="GtkTextBuffer" id="will_be_installed_buf"/>
-  <object class="GtkTextBuffer" id="will_be_removed_buf"/>
+  <object class="GtkTextBuffer" id="will_be_applied_buf"/>
   <object class="GtkDialog" id="confirm_dialog">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Apply the following changes?</property>
@@ -247,32 +247,17 @@ https://hyakosm.net</property>
           </packing>
         </child>
         <child>
-          <object class="GtkAccelLabel" id="label_installed">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">These packages will be installed :</property>
-            <attributes>
-              <attribute name="weight" value="bold"/>
-            </attributes>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkScrolledWindow">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
             <child>
-              <object class="GtkTextView" id="will_be_installed">
+              <object class="GtkTextView" id="will_be_applied">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="editable">False</property>
                 <property name="cursor_visible">False</property>
-                <property name="buffer">will_be_installed_buf</property>
+                <property name="buffer">will_be_applied_buf</property>
                 <property name="monospace">True</property>
               </object>
             </child>
@@ -281,43 +266,6 @@ https://hyakosm.net</property>
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel" id="label_removed">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes">These packages will be removed :</property>
-            <attributes>
-              <attribute name="weight" value="bold"/>
-            </attributes>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="shadow_type">in</property>
-            <child>
-              <object class="GtkTextView" id="will_be_removed">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="editable">False</property>
-                <property name="cursor_visible">False</property>
-                <property name="buffer">will_be_removed_buf</property>
-                <property name="monospace">True</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">4</property>
           </packing>
         </child>
       </object>
