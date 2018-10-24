@@ -23,6 +23,9 @@ class Application():
 		self.transaction_dialog = self.builder.get_object("transaction_dialog")
 		self.about_dialog = self.builder.get_object("about_dialog")
 
+		self.window.set_icon_name("system-software-install")
+		self.window.set_wmclass("Simple DNF", "Simple DNF")
+
 		self.window.show_all()			
 
 		self.initialize_treeview()
@@ -138,11 +141,16 @@ class Application():
 				for ii in i[1]:
 					final_list_remove.append(CrypticToCompleteName(ii[0]))
 
-		gtk_list_install = self.builder.get_object("will_be_installed_buf")
-		gtk_list_install.set_text('\n'.join(final_list_install))
-		
-		gtk_list_remove = self.builder.get_object("will_be_removed_buf")
-		gtk_list_remove.set_text('\n'.join(final_list_remove))
+		texte = ""
+		if len(final_list_install):
+			texte += "These packages will be installed:\n\n"
+			texte += '\n'.join(final_list_install)
+			texte += '\n\n'
+		if len(final_list_remove):
+			texte += "These packages will be removed:\n\n"
+			texte += '\n'.join(final_list_remove)
+
+		self.builder.get_object("will_be_applied_buf").set_text(texte)
 
 		self.confirm_dialog.show()
 
