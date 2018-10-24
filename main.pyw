@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import gi, sqlite3, threading, dnfdaemon.client
+import gi, sqlite3, threading, dnfdaemon.client, time
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gio
 from operator import itemgetter
@@ -11,6 +11,9 @@ class Backend(dnfdaemon.client.Client):
 
 class Application():
 	def __init__(self):
+
+		self.temps = time.time()
+
 		self.dnf = Backend()
 
 		self.builder = Gtk.Builder()
@@ -19,6 +22,7 @@ class Application():
 
 		self.data_store = self.builder.get_object("data_store")
 		self.window = self.builder.get_object("window")
+		self.mainbox = self.builder.get_object("mainbox")
 		self.confirm_dialog = self.builder.get_object("confirm_dialog")
 		self.transaction_dialog = self.builder.get_object("transaction_dialog")
 		self.about_dialog = self.builder.get_object("about_dialog")
@@ -26,9 +30,9 @@ class Application():
 		self.window.set_icon_name("system-software-install")
 		self.window.set_wmclass("Simple DNF", "Simple DNF")
 
-		self.window.show_all()			
-
 		self.initialize_treeview()
+
+		self.window.show_all()
 
 	def populate_liststore(self):
 		for i in self.pkg_list_all:
@@ -40,15 +44,23 @@ class Application():
 			arch = longname[4]
 			size = str(round(i[3]/1024/1024, 2))+" M"
 			self.data_store.append([state, icon, name, version, arch, size])
+		
+		self.display_treeview()
+		print(time.time()-self.temps)
 
 	def initialize_treeview(self):
-		# Initialize packages view parameters
+		# Set loading screen
+
+		self.window.remove(self.mainbox)
+		self.spinner = Gtk.Spinner()
+		self.spinner.start()
+		self.window.add(self.spinner)
+
+		# Initialize parameters
 
 		self.data_store.clear()
 		self.list_install = []
 		self.list_remove = []
-		self.builder.get_object("apply_button").set_sensitive(False)
-
 
 		# Retrive packages list sorted by name with status icons
 
@@ -65,6 +77,13 @@ class Application():
 
 		self.pkg_list_all = sorted(self.pkg_list_all, key=itemgetter(2))
 
+		# Populate GtkListStore with data
+
+		self.thread = threading.Thread(target=self.populate_liststore)
+		self.thread.daemon = True
+		self.thread.start()
+
+	def display_treeview(self):
 		# Create treeview columns
 
 		packages_treeview = self.builder.get_object("packages_treeview")
@@ -86,11 +105,12 @@ class Application():
 			column.set_resizable(True)
 			column.set_fixed_width(180*sizes[i])
 			packages_treeview.append_column(column)
-		
-		# Populate GtkListStore with data
 
-		self.thread = threading.Thread(target=self.populate_liststore)
-		self.thread.start()
+		# Set treeview screen
+
+		self.window.remove(self.spinner)
+		self.window.add(self.mainbox)
+		self.builder.get_object("apply_button").set_sensitive(False)
 
 	def on_cell_toggled(self, widget, path):
 		pkg_new_state = self.data_store[path][0] = not self.data_store[path][0]
@@ -175,7 +195,6 @@ class Application():
 		self.about_dialog.hide()
 
 	def on_application_close(self, widget):
-		self.thread.join()
 		Gtk.main_quit()
 
 def main():
