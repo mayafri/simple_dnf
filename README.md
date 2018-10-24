@@ -9,6 +9,7 @@ Initial Roadmap :
 - [ ] Ability to install / remove
 - [ ] Detailed view of package
 - [ ] Sorted views
+- [ ] French translation
 
 ![](https://raw.githubusercontent.com/hyakosm/simple_dnf/master/screenshot.png)
 
