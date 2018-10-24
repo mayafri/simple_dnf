@@ -17,11 +17,10 @@ class Application():
 		self.builder.add_from_file("ui.glade")
 		self.builder.connect_signals(self)
 
-		self.list_install = []
-		self.list_remove = []
 		self.data_store = self.builder.get_object("data_store")
 		self.window = self.builder.get_object("window")
 		self.confirm_dialog = self.builder.get_object("confirm_dialog")
+		self.transaction_dialog = self.builder.get_object("transaction_dialog")
 
 		self.window.show_all()			
 
@@ -39,6 +38,14 @@ class Application():
 			self.data_store.append([state, icon, name, version, arch, size])
 
 	def initialize_treeview(self):
+		# Initialize packages view parameters
+
+		self.data_store.clear()
+		self.list_install = []
+		self.list_remove = []
+		self.builder.get_object("apply_button").set_sensitive(False)
+
+
 		# Retrive packages list sorted by name with status icons
 
 		if self.dnf.Lock():
@@ -71,10 +78,10 @@ class Application():
 		sizes = [2,1,1,1]
 		text_renderer = Gtk.CellRendererText()
 		for i in range(4):
-			column_other = Gtk.TreeViewColumn(titles[i], text_renderer, text=i+2)
-			column_other.set_resizable(True)
-			column_other.set_fixed_width(180*sizes[i])
-			packages_treeview.append_column(column_other)
+			column = Gtk.TreeViewColumn(titles[i], text_renderer, text=i+2)
+			column.set_resizable(True)
+			column.set_fixed_width(180*sizes[i])
+			packages_treeview.append_column(column)
 		
 		# Populate GtkListStore with data
 
@@ -133,9 +140,9 @@ class Application():
 					final_list_remove.append(CrypticToCompleteName(ii[0]))
 
 		gtk_list_install = self.builder.get_object("will_be_installed_buf")
-		gtk_list_remove = self.builder.get_object("will_be_removed_buf")
-
 		gtk_list_install.set_text('\n'.join(final_list_install))
+		
+		gtk_list_remove = self.builder.get_object("will_be_removed_buf")
 		gtk_list_remove.set_text('\n'.join(final_list_remove))
 
 		self.confirm_dialog.show()
@@ -144,10 +151,15 @@ class Application():
 		self.confirm_dialog.hide()
 	
 	def on_confirm_changes(self, widget):
-		# if self.dnf.Lock():
-		# 	self.dnf.RunTransaction()
-		# 	self.dnf.Unlock()
-		pass
+		self.confirm_dialog.hide()
+		self.transaction_dialog.show()
+		if self.dnf.Lock():
+			self.dnf.Remove(' '.join(self.list_remove))
+			self.dnf.Install(' '.join(self.list_install))
+			self.dnf.RunTransaction()
+			self.dnf.Unlock()
+			self.transaction_dialog.hide()
+			self.initialize_treeview()
 
 	def on_application_close(self, widget):
 		self.thread.join()
