@@ -21,6 +21,7 @@ class Application():
 		self.window = self.builder.get_object("window")
 		self.confirm_dialog = self.builder.get_object("confirm_dialog")
 		self.transaction_dialog = self.builder.get_object("transaction_dialog")
+		self.about_dialog = self.builder.get_object("about_dialog")
 
 		self.window.show_all()			
 
@@ -87,8 +88,6 @@ class Application():
 
 		self.thread = threading.Thread(target=self.populate_liststore)
 		self.thread.start()
-
-		self.window.show_all()
 
 	def on_cell_toggled(self, widget, path):
 		pkg_new_state = self.data_store[path][0] = not self.data_store[path][0]
@@ -160,6 +159,12 @@ class Application():
 			self.dnf.Unlock()
 			self.transaction_dialog.hide()
 			self.initialize_treeview()
+	
+	def on_about_clicked(self, widget):
+		self.about_dialog.show()
+	
+	def on_about_closed(self, widget):
+		self.about_dialog.hide()
 
 	def on_application_close(self, widget):
 		self.thread.join()
