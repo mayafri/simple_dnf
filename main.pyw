@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import gi, sqlite3, threading, dnfdaemon.client, time
+import gi, sqlite3, threading, dnfdaemon.client
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gio
 from operator import itemgetter
@@ -11,9 +11,6 @@ class Backend(dnfdaemon.client.Client):
 
 class Application():
 	def __init__(self):
-
-		self.temps = time.time()
-
 		self.dnf = Backend()
 
 		self.builder = Gtk.Builder()
@@ -23,6 +20,8 @@ class Application():
 		self.data_store = self.builder.get_object("data_store")
 		self.window = self.builder.get_object("window")
 		self.mainbox = self.builder.get_object("mainbox")
+		self.scrolled = self.builder.get_object("scrolled")
+		self.loading_screen = self.builder.get_object("loading_screen")
 		self.confirm_dialog = self.builder.get_object("confirm_dialog")
 		self.transaction_dialog = self.builder.get_object("transaction_dialog")
 		self.about_dialog = self.builder.get_object("about_dialog")
@@ -44,20 +43,17 @@ class Application():
 			arch = longname[4]
 			size = str(round(i[3]/1024/1024, 2))+" M"
 			self.data_store.append([state, icon, name, version, arch, size])
-		
 		self.display_treeview()
-		print(time.time()-self.temps)
 
 	def initialize_treeview(self):
 		# Set loading screen
 
-		self.window.remove(self.mainbox)
-		self.spinner = Gtk.Spinner()
-		self.spinner.start()
-		self.window.add(self.spinner)
+		self.mainbox.remove(self.scrolled)
+		self.mainbox.add(self.loading_screen)
 
 		# Initialize parameters
 
+		self.builder.get_object("apply_button").set_sensitive(False)
 		self.data_store.clear()
 		self.list_install = []
 		self.list_remove = []
@@ -108,9 +104,8 @@ class Application():
 
 		# Set treeview screen
 
-		self.window.remove(self.spinner)
-		self.window.add(self.mainbox)
-		self.builder.get_object("apply_button").set_sensitive(False)
+		self.mainbox.remove(self.loading_screen)
+		self.mainbox.add(self.scrolled)
 
 	def on_cell_toggled(self, widget, path):
 		pkg_new_state = self.data_store[path][0] = not self.data_store[path][0]

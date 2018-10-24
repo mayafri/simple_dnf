@@ -141,6 +141,52 @@ https://hyakosm.net</property>
             <property name="position">0</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkBox" id="loading_screen">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="vexpand">True</property>
+                <property name="pixel_size">128</property>
+                <property name="icon_name">system-software-install</property>
+                <property name="icon_size">6</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinner">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="vexpand">True</property>
+                <property name="active">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
     </child>
   </object>
@@ -149,27 +195,30 @@ https://hyakosm.net</property>
     <property name="title" translatable="yes">Processing</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
     <property name="default_width">500</property>
-    <property name="default_height">250</property>
+    <property name="default_height">200</property>
+    <property name="type_hint">dialog</property>
     <property name="deletable">False</property>
+    <property name="gravity">center</property>
     <child>
       <placeholder/>
     </child>
     <child>
-      <object class="GtkLayout">
+      <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
           <object class="GtkSpinner">
-            <property name="width_request">100</property>
-            <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
             <property name="active">True</property>
           </object>
           <packing>
-            <property name="x">43</property>
-            <property name="y">87</property>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
           </packing>
         </child>
         <child>
@@ -178,11 +227,13 @@ https://hyakosm.net</property>
             <property name="height_request">80</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
             <property name="label" translatable="yes">Please wait, DNF is applying changes.</property>
           </object>
           <packing>
-            <property name="x">145</property>
-            <property name="y">87</property>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>
@@ -193,7 +244,7 @@ https://hyakosm.net</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Apply the following changes?</property>
     <property name="modal">True</property>
-    <property name="window_position">center</property>
+    <property name="window_position">center-on-parent</property>
     <property name="default_width">400</property>
     <property name="default_height">500</property>
     <property name="type_hint">dialog</property>
