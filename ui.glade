@@ -146,6 +146,7 @@ https://hyakosm.net</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
+            <property name="spacing">64</property>
             <child>
               <placeholder/>
             </child>
@@ -165,15 +166,45 @@ https://hyakosm.net</property>
               </packing>
             </child>
             <child>
-              <object class="GtkSpinner">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="vexpand">True</property>
-                <property name="active">True</property>
+                <child>
+                  <object class="GtkSpinner">
+                    <property name="width_request">64</property>
+                    <property name="height_request">64</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">end</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="margin_left">15</property>
+                    <property name="label" translatable="yes">Loading package cache...</property>
+                    <attributes>
+                      <attribute name="size" value="15000"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
+                <property name="fill">False</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -183,7 +214,7 @@ https://hyakosm.net</property>
           </object>
           <packing>
             <property name="expand">True</property>
-            <property name="fill">True</property>
+            <property name="fill">False</property>
             <property name="position">1</property>
           </packing>
         </child>
