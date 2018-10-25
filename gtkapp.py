@@ -19,6 +19,7 @@ class Application():
 		self.transaction_dialog = self.builder.get_object("transaction_dialog")
 		self.finished_dialog = self.builder.get_object("finished_dialog")
 		self.about_dialog = self.builder.get_object("about_dialog")
+		self.apply_button = self.builder.get_object("apply_button")
 
 		self.window.set_icon_name("system-software-install")
 		self.window.set_wmclass("Simple DNF", "Simple DNF")
@@ -67,7 +68,7 @@ class Application():
 	def initialize_treeview(self):
 		# Initialize parameters
 
-		self.builder.get_object("apply_button").set_sensitive(False)
+		self.apply_button.set_sensitive(False)
 		self.list_install = []
 		self.list_remove = []
 		
@@ -112,11 +113,13 @@ class Application():
 				self.list_remove.append(complete_name)
 
 		if len(self.list_install) == len(self.list_remove) == 0:
-			self.builder.get_object("apply_button").set_sensitive(False)
+			self.apply_button.set_sensitive(False)
 		else:
-			self.builder.get_object("apply_button").set_sensitive(True)
+			self.apply_button.set_sensitive(True)
 
 	def on_apply_clicked(self, widget):
+		self.apply_button.set_sensitive(False)
+
 		list_of_changes = \
 		self.dnf.simulate_transaction(self.list_install, self.list_remove)
 
@@ -125,6 +128,7 @@ class Application():
 		self.confirm_dialog.show()
 
 	def on_cancel_changes(self, widget):
+		self.apply_button.set_sensitive(True)
 		self.confirm_dialog.hide()
 	
 	def on_confirm_changes(self, widget):
