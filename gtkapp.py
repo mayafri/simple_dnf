@@ -23,39 +23,22 @@ class Application():
 		self.window.set_icon_name("system-software-install")
 		self.window.set_wmclass("Simple DNF", "Simple DNF")
 
-		self.initialize_treeview()
+		self.create_treeview()
 
 		self.window.show_all()
 
 	def populate_liststore(self):
+		# Populate Gtk model
+
 		for i in self.pkg_list_all:
 			self.data_store.append(i)
-		self.display_treeview()
+		
+		# Remove loading screen
 
-	def initialize_treeview(self):
-		# Set loading screen
+		self.mainbox.remove(self.loading_screen)
+		self.mainbox.add(self.scrolled)
 
-		self.mainbox.remove(self.scrolled)
-		self.mainbox.add(self.loading_screen)
-
-		# Initialize parameters
-
-		self.builder.get_object("apply_button").set_sensitive(False)
-		self.data_store.clear()
-		self.list_install = []
-		self.list_remove = []
-
-		# Retrive packages list sorted by name with status icons
-
-		self.pkg_list_all = self.dnf.get_all_packages("emblem-ok-symbolic")
-
-		# Populate GtkListStore with data
-
-		self.thread = threading.Thread(target=self.populate_liststore)
-		self.thread.daemon = True
-		self.thread.start()
-
-	def display_treeview(self):
+	def create_treeview(self):
 		# Create treeview columns
 
 		packages_treeview = self.builder.get_object("packages_treeview")
@@ -72,16 +55,43 @@ class Application():
 		titles = ['Name', 'Version', 'Arch', 'Size']
 		sizes = [2,1,1,1]
 		text_renderer = Gtk.CellRendererText()
+
 		for i in range(4):
 			column = Gtk.TreeViewColumn(titles[i], text_renderer, text=i+2)
 			column.set_resizable(True)
 			column.set_fixed_width(180*sizes[i])
 			packages_treeview.append_column(column)
+		
+		self.initialize_treeview()
 
-		# Set treeview screen
+	def initialize_treeview(self):
+		# Initialize parameters
 
-		self.mainbox.remove(self.loading_screen)
-		self.mainbox.add(self.scrolled)
+		self.builder.get_object("apply_button").set_sensitive(False)
+		self.list_install = []
+		self.list_remove = []
+		
+		self.prepare_treeview()
+
+	def prepare_treeview(self):
+		# Set loading screen
+
+		self.mainbox.remove(self.scrolled)
+		self.mainbox.add(self.loading_screen)
+
+		# Clear Gtk model
+
+		self.data_store.clear()
+
+		# Retrive packages list sorted by name with status icons
+
+		self.pkg_list_all = self.dnf.get_all_packages("emblem-ok-symbolic")
+
+		# Populate GtkListStore with data
+
+		self.thread = threading.Thread(target=self.populate_liststore)
+		self.thread.daemon = True
+		self.thread.start()
 
 	def on_cell_toggled(self, widget, path):
 		pkg_new_state = self.data_store[path][0] = not self.data_store[path][0]
@@ -135,6 +145,7 @@ class Application():
 		self.about_dialog.hide()
 
 	def on_application_close(self, widget):
+		self.thread.join()
 		Gtk.main_quit()
 
 	def application_run(self):
