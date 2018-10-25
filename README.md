@@ -8,8 +8,9 @@ Initial Roadmap :
 - [x] Async cache loading
 - [x] Install / remove features
 - [x] Fast search (by first letters)
-- [ ] Detailed view of package
-- [ ] Sorted views
+- [x] Sorted lists
+- [ ] Advanced search
+- [ ] Package detailed view
 - [ ] French translation
 
 Requirement : `python3-dnfdaemon`
