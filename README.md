@@ -1,7 +1,5 @@
 # Simple DNF
 
-![](https://raw.githubusercontent.com/GNOME/adwaita-icon-theme/master/Adwaita/256x256/apps/system-software-install.png)
-
 Simple DNF is a **fast** and **simple** graphical utility to manage packages and perform basic operations, like *Synaptic* but for DNF-based Linux distributions.
 
 Initial Roadmap :
