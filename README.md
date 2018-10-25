@@ -10,11 +10,10 @@ Initial Roadmap :
 - [x] Async cache loading
 - [x] Install / remove features
 - [x] Fast search (by first letters)
-- [ ] Sync button
 - [ ] Detailed view of package
 - [ ] Sorted views
 - [ ] French translation
 
-![](https://raw.githubusercontent.com/hyakosm/simple_dnf/master/screenshot.png)
-
 Requirement : `python3-dnfdaemon`
+
+![](https://raw.githubusercontent.com/hyakosm/simple_dnf/master/screenshot.png)
