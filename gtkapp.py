@@ -17,6 +17,7 @@ class Application():
 		self.loading_screen = self.builder.get_object("loading_screen")
 		self.confirm_dialog = self.builder.get_object("confirm_dialog")
 		self.transaction_dialog = self.builder.get_object("transaction_dialog")
+		self.finished_dialog = self.builder.get_object("finished_dialog")
 		self.about_dialog = self.builder.get_object("about_dialog")
 
 		self.window.set_icon_name("system-software-install")
@@ -121,7 +122,11 @@ class Application():
 		self.transaction_dialog.show()
 		if self.dnf.execute_transaction(self.list_install, self.list_remove):
 			self.transaction_dialog.hide()
-			self.initialize_treeview()
+			self.finished_dialog.show()
+	
+	def on_return_to_list_clicked(self, widget):
+		self.finished_dialog.hide()
+		self.initialize_treeview()
 	
 	def on_about_clicked(self, widget):
 		self.about_dialog.show()
