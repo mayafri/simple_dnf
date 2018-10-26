@@ -4,6 +4,7 @@ from operator import itemgetter
 class Backend(dnfdaemon.client.Client):
 	def __init__(self):
 		dnfdaemon.client.Client.__init__(self)
+		self.SetWatchdogState(True)
 	
 	def load_packages(self, icon_name_installed):
 		pkg_list_all = []
@@ -82,9 +83,14 @@ class Backend(dnfdaemon.client.Client):
 		return texte
 	
 	def execute_transaction(self, list_install, list_remove):
+		self.download_total_frac = 0
 		if self.Lock():
 			self.Remove(' '.join(list_remove))
 			self.Install(' '.join(list_install))
 			self.RunTransaction()
 			self.Unlock()
 			return True
+
+	def on_DownloadProgress(self, name, frac, total_frac, total_files):
+		self.download_total_frac = total_frac
+			

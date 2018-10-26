@@ -2,14 +2,14 @@
 
 Simple DNF is a **fast** and **simple** graphical utility to manage packages and perform basic operations, like *Synaptic* but for DNF-based Linux distributions.
 
-Initial Roadmap :
+Features :
 
-- [x] View of available and installed packages
-- [x] Install / remove features
+- [x] Views by available or installed packages
+- [x] Multiple selections
 - [x] Instant search
 - [x] Sorted lists
-- [ ] Package detailed view
-- [ ] French translation
+- [ ] GPG Management
+- [ ] Groups display
 
 Requirement : `python3-dnfdaemon`
 

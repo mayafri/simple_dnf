@@ -8,13 +8,13 @@
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
-    <property name="deletable">False</property>
     <property name="program_name">Simple DNF</property>
     <property name="website">https://github.com/hyakosm/simple_dnf</property>
     <property name="authors">Maya Friedrichs
 https://hyakosm.net</property>
     <property name="logo_icon_name">system-software-install</property>
     <property name="license_type">gpl-3-0</property>
+    <signal name="delete-event" handler="on_about_closed" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
     </child>
@@ -28,18 +28,7 @@ https://hyakosm.net</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">OK</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <signal name="clicked" handler="on_about_closed" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -245,6 +234,33 @@ https://hyakosm.net</property>
       </object>
     </child>
   </object>
+  <object class="GtkPopover" id="main_popover">
+    <property name="can_focus">False</property>
+    <signal name="button-release-event" handler="on_mainmenu_clicked" swapped="no"/>
+    <child>
+      <object class="GtkButtonBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="layout_style">start</property>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">About</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="relief">none</property>
+            <signal name="clicked" handler="on_about_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkPopover" id="sort_popover">
     <property name="can_focus">False</property>
     <child>
@@ -305,8 +321,8 @@ https://hyakosm.net</property>
     </child>
   </object>
   <object class="GtkWindow" id="window">
-    <property name="width_request">900</property>
-    <property name="height_request">650</property>
+    <property name="width_request">1000</property>
+    <property name="height_request">700</property>
     <property name="can_focus">False</property>
     <property name="gravity">center</property>
     <signal name="destroy" handler="on_application_close" swapped="no"/>
@@ -317,14 +333,34 @@ https://hyakosm.net</property>
         <property name="title" translatable="yes">Simple DNF</property>
         <property name="show_close_button">True</property>
         <child>
-          <object class="GtkButton" id="apply_button">
-            <property name="label" translatable="yes">Apply</property>
+          <object class="GtkSearchEntry" id="search_field">
             <property name="visible">True</property>
-            <property name="sensitive">False</property>
+            <property name="can_focus">True</property>
+            <property name="width_chars">30</property>
+            <property name="primary_icon_name">edit-find-symbolic</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">False</property>
+            <signal name="search-changed" handler="on_search_activated" swapped="no"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkMenuButton">
+            <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_apply_clicked" swapped="no"/>
+            <property name="popover">main_popover</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">open-menu</property>
+                <property name="icon_size">1</property>
+              </object>
+            </child>
           </object>
+          <packing>
+            <property name="pack_type">end</property>
+          </packing>
         </child>
         <child>
           <object class="GtkMenuButton" id="sort_button">
@@ -333,42 +369,29 @@ https://hyakosm.net</property>
             <property name="receives_default">True</property>
             <property name="popover">sort_popover</property>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Sort list</property>
+                <property name="icon_name">view-list-symbolic</property>
               </object>
             </child>
           </object>
           <packing>
-            <property name="position">2</property>
+            <property name="pack_type">end</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
-            <property name="label" translatable="yes">About</property>
+          <object class="GtkButton" id="apply_button">
+            <property name="label" translatable="yes">Apply changes</property>
             <property name="visible">True</property>
+            <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_about_clicked" swapped="no"/>
+            <signal name="clicked" handler="on_apply_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="pack_type">end</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkSearchEntry" id="search_field">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="primary_icon_name">edit-find-symbolic</property>
-            <property name="primary_icon_activatable">False</property>
-            <property name="primary_icon_sensitive">False</property>
-            <signal name="search-changed" handler="on_search_activated" swapped="no"/>
-          </object>
-          <packing>
-            <property name="pack_type">end</property>
-            <property name="position">2</property>
+            <property name="position">-1</property>
           </packing>
         </child>
       </object>
@@ -377,7 +400,7 @@ https://hyakosm.net</property>
       <object class="GtkBox" id="mainbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="spacing">6</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkScrolledWindow" id="scrolled">
             <property name="visible">True</property>
@@ -390,7 +413,6 @@ https://hyakosm.net</property>
               <object class="GtkTreeView" id="packages_treeview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="double_buffered">False</property>
                 <property name="model">data_store</property>
                 <property name="enable_search">False</property>
                 <property name="search_column">2</property>
@@ -427,12 +449,16 @@ https://hyakosm.net</property>
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="margin_left">20</property>
+        <property name="margin_right">20</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">40</property>
         <child>
-          <object class="GtkSpinner">
+          <object class="GtkAccelLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="hexpand">True</property>
-            <property name="active">True</property>
+            <property name="valign">end</property>
+            <property name="label" translatable="yes">Please wait, DNF is applying changes.</property>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -441,13 +467,10 @@ https://hyakosm.net</property>
           </packing>
         </child>
         <child>
-          <object class="GtkAccelLabel">
-            <property name="width_request">295</property>
-            <property name="height_request">80</property>
+          <object class="GtkProgressBar" id="transaction_progressbar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="hexpand">True</property>
-            <property name="label" translatable="yes">Please wait, DNF is applying changes.</property>
+            <property name="valign">start</property>
           </object>
           <packing>
             <property name="expand">True</property>
