@@ -135,9 +135,11 @@ class Application():
 		list_of_changes = \
 		self.dnf.simulate_transaction(self.list_install, self.list_remove)
 
-		self.builder.get_object("will_be_applied_buf").set_text(list_of_changes)
-
-		self.confirm_dialog.show()
+		if(list_of_changes):
+			self.builder.get_object("will_be_applied_buf").set_text(list_of_changes)
+			self.confirm_dialog.show()
+		else:
+			self.apply_button.set_sensitive(True)
 
 	def on_cancel_changes(self, widget):
 		self.apply_button.set_sensitive(True)

@@ -360,6 +360,7 @@ https://hyakosm.net</property>
           </object>
           <packing>
             <property name="pack_type">end</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -378,6 +379,7 @@ https://hyakosm.net</property>
           </object>
           <packing>
             <property name="pack_type">end</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -388,6 +390,9 @@ https://hyakosm.net</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <signal name="clicked" handler="on_apply_clicked" swapped="no"/>
+            <style>
+              <class name="suggested-action"/>
+            </style>
           </object>
           <packing>
             <property name="pack_type">end</property>
