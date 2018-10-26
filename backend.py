@@ -47,9 +47,14 @@ class Backend(dnfdaemon.client.Client):
 
 	def simulate_transaction(self, list_install, list_remove):
 		if self.Lock():
-			self.Remove(' '.join(list_remove))
-			self.Install(' '.join(list_install))
-			transaction = self.GetTransaction()
+			try:
+				self.Remove(' '.join(list_remove))
+				self.Install(' '.join(list_install))
+				transaction = self.GetTransaction()
+			except dnfdaemon.client.DaemonError:
+				self.Unlock()
+				dnfdaemon.client.Client.__init__(self)
+				return False
 			self.Unlock()
 		
 		final_list_install = []
