@@ -5,11 +5,9 @@ Simple DNF is a **fast** and **simple** graphical utility to manage packages and
 Initial Roadmap :
 
 - [x] View of available and installed packages
-- [x] Async cache loading
 - [x] Install / remove features
-- [x] Fast search (by first letters)
+- [x] Instant search
 - [x] Sorted lists
-- [ ] Advanced search
 - [ ] Package detailed view
 - [ ] French translation
 
