@@ -1,4 +1,4 @@
-import gi, threading, backend
+import gi, backend
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk, Gio
 
@@ -27,35 +27,28 @@ class Application():
 		self.sort_all_button = self.builder.get_object("sort_all_button")
 		self.sort_available_button = self.builder.get_object("sort_available_button")
 		self.sort_installed_button = self.builder.get_object("sort_installed_button")
+		self.search_field = self.builder.get_object("search_field")
 
 		self.window.set_icon_name("system-software-install")
 		self.window.set_wmclass("Simple DNF", "Simple DNF")
 
-		self.selected_sort_type = "all"
 		self.create_treeview()
-		self.initialize_treeview(self.selected_sort_type)
+		self.initialize_treeview("all")
 
 		self.window.show_all()
-
-	def populate_liststore(self):
-		# Populate Gtk model
-
-		for i in self.pkg_list_all:
-			self.data_store.append(i)
-		
-		# Remove loading screen
-
+	
+	def set_loading_screen(self):
+		self.window.remove(self.mainbox)
+		self.loading_window.remove(self.loading_screen)
+		self.window.add(self.loading_screen)
+		self.window.show_all()
+	
+	def unset_loading_screen(self):
 		self.window.remove(self.loading_screen)
 		self.window.add(self.mainbox)
 		self.loading_window.add(self.loading_screen)
 
-		# Unlock sort choice
-
-		self.sort_button.set_sensitive(True)
-
 	def create_treeview(self):
-		# Create treeview columns
-
 		packages_treeview = self.builder.get_object("packages_treeview")
 
 		renderer_toggle = Gtk.CellRendererToggle()
@@ -78,34 +71,44 @@ class Application():
 			packages_treeview.append_column(column)
 
 	def initialize_treeview(self, sort_type):
-		# Initialize parameters
-
+		self.set_loading_screen()
 		self.apply_button.set_sensitive(False)
 		self.sort_button.set_sensitive(False)
+		self.search_field.set_sensitive(False)
+
 		self.list_install = []
 		self.list_remove = []
 		
-		self.prepare_treeview(sort_type)
-
-	def prepare_treeview(self, sort_type):
-		# Set loading screen
-
-		self.window.remove(self.mainbox)
-		self.loading_window.remove(self.loading_screen)
-		self.window.add(self.loading_screen)
-
-		# Clear Gtk model
-
 		self.data_store.clear()
-
-		# Retrive packages list sorted by name with status icons
-
 		self.pkg_list_all = self.dnf.get_sorted_packages(sort_type, "emblem-ok-symbolic")
+		self.populate_liststore()
 
-		# Populate GtkListStore with data
+		self.unset_loading_screen()
+		self.sort_button.set_sensitive(True)
+		self.search_field.set_sensitive(True)
 
-		self.thread = threading.Thread(target=self.populate_liststore)
-		self.thread.start()
+		if(self.search_field.get_text):
+			self.search_in_treeview(self.search_field.get_text())
+
+	def search_in_treeview(self, keyword):
+		self.data_store.clear()
+		self.pkg_list_all = self.dnf.get_filtered_in_loaded_packages(keyword)
+		self.populate_liststore()
+	
+	def populate_liststore(self, min=0):
+		limit = min+1000
+
+		if len(self.pkg_list_all) < limit:
+			max = len(self.pkg_list_all)
+		else:
+			max = limit
+
+		for i in range(min, max):
+			self.data_store.append(self.pkg_list_all[i])
+	
+	def on_list_limit_reached(self, widget, pos):
+		if pos == pos.BOTTOM:
+			self.populate_liststore(len(self.data_store))
 
 	def on_cell_toggled(self, widget, path):
 		pkg_new_state = self.data_store[path][0] = not self.data_store[path][0]
@@ -153,26 +156,26 @@ class Application():
 	
 	def on_return_to_list_clicked(self, widget):
 		self.finished_dialog.hide()
-		self.initialize_treeview(self.selected_sort_type)
+		self.initialize_treeview()
 	
-	def sort_button_action(self):
+	def sort_button_action(self, sort_type):
 		self.sort_popover.popdown()
-		self.initialize_treeview(self.selected_sort_type)
+		self.initialize_treeview(sort_type)
 
 	def on_sort_all_button_clicked(self, widget):
 		if widget.get_active():
-			self.selected_sort_type = "all"
-			self.sort_button_action()
+			self.sort_button_action("all")
 
 	def on_sort_available_button_clicked(self, widget):
 		if widget.get_active():
-			self.selected_sort_type = "available"
-			self.sort_button_action()
+			self.sort_button_action("available")
 
 	def on_sort_installed_button_clicked(self, widget):
 		if widget.get_active():
-			self.selected_sort_type = "installed"
-			self.sort_button_action()
+			self.sort_button_action("installed")
+	
+	def on_search_activated(self, widget):
+		self.search_in_treeview(widget.get_text())
 	
 	def on_about_clicked(self, widget):
 		self.about_dialog.show()
@@ -181,7 +184,6 @@ class Application():
 		self.about_dialog.hide()
 
 	def on_application_close(self, widget):
-		self.thread.join()
 		Gtk.main_quit()
 
 	def application_run(self):
