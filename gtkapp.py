@@ -1,6 +1,6 @@
 import gi, backend
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gio
+from gi.repository import GLib, Gtk, Gio
 
 class Application():
 	def __init__(self):
@@ -24,10 +24,8 @@ class Application():
 		self.apply_button = self.builder.get_object("apply_button")
 		self.sort_button = self.builder.get_object("sort_button")
 		self.sort_popover = self.builder.get_object("sort_popover")
-		self.sort_all_button = self.builder.get_object("sort_all_button")
-		self.sort_available_button = self.builder.get_object("sort_available_button")
-		self.sort_installed_button = self.builder.get_object("sort_installed_button")
 		self.search_field = self.builder.get_object("search_field")
+		self.transaction_progressbar = self.builder.get_object("transaction_progressbar")
 
 		self.window.set_icon_name("system-software-install")
 		self.window.set_wmclass("Simple DNF", "Simple DNF")
@@ -62,13 +60,13 @@ class Application():
 		packages_treeview.append_column(column_status)
 
 		titles = ['Name', 'Version', 'Arch', 'Size']
-		sizes = [2,1,1,1]
+		sizes = [2, 1.5,1,1]
 		text_renderer = Gtk.CellRendererText()
 
 		for i in range(4):
 			column = Gtk.TreeViewColumn(titles[i], text_renderer, text=i+2)
 			column.set_resizable(True)
-			column.set_fixed_width(180*sizes[i])
+			column.set_fixed_width(175*sizes[i])
 			packages_treeview.append_column(column)
 
 	def initialize_treeview(self):
@@ -86,6 +84,7 @@ class Application():
 		self.unset_loading_screen()
 		self.sort_button.set_sensitive(True)
 		self.search_field.set_sensitive(True)
+		self.window.set_focus(self.search_field)
 
 	def filter_in_treeview(self):
 		self.data_store.clear()
@@ -147,6 +146,15 @@ class Application():
 	def on_confirm_changes(self, widget):
 		self.confirm_dialog.hide()
 		self.transaction_dialog.show()
+
+		def ProgressBarUpdate(data):
+			self.transaction_progressbar.pulse()
+			progress = self.dnf.download_total_frac
+			self.transaction_progressbar.set_fraction(progress)
+			return True
+		
+		GLib.timeout_add(100, ProgressBarUpdate, None)
+
 		if self.dnf.execute_transaction(self.list_install, self.list_remove):
 			self.transaction_dialog.hide()
 			self.finished_dialog.show()
@@ -175,11 +183,15 @@ class Application():
 	def on_search_activated(self, widget):
 		self.filter_in_treeview()
 	
+	def on_mainmenu_clicked(self, widget, event):
+		widget.popdown()
+	
 	def on_about_clicked(self, widget):
 		self.about_dialog.show()
 	
-	def on_about_closed(self, widget):
-		self.about_dialog.hide()
+	def on_about_closed(self, widget, rep=None):
+		widget.hide()
+		return True
 
 	def on_application_close(self, widget):
 		Gtk.main_quit()
