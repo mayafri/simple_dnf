@@ -32,8 +32,9 @@ class Application():
 		self.window.set_icon_name("system-software-install")
 		self.window.set_wmclass("Simple DNF", "Simple DNF")
 
+		self.sort_type = "all" # Default sort type
 		self.create_treeview()
-		self.initialize_treeview("all")
+		self.initialize_treeview()
 
 		self.window.show_all()
 	
@@ -70,7 +71,7 @@ class Application():
 			column.set_fixed_width(180*sizes[i])
 			packages_treeview.append_column(column)
 
-	def initialize_treeview(self, sort_type):
+	def initialize_treeview(self):
 		self.set_loading_screen()
 		self.apply_button.set_sensitive(False)
 		self.sort_button.set_sensitive(False)
@@ -79,20 +80,16 @@ class Application():
 		self.list_install = []
 		self.list_remove = []
 		
-		self.data_store.clear()
-		self.pkg_list_all = self.dnf.get_sorted_packages(sort_type, "emblem-ok-symbolic")
-		self.populate_liststore()
+		self.dnf.load_packages("emblem-ok-symbolic")
+		self.filter_in_treeview()
 
 		self.unset_loading_screen()
 		self.sort_button.set_sensitive(True)
 		self.search_field.set_sensitive(True)
 
-		if(self.search_field.get_text):
-			self.search_in_treeview(self.search_field.get_text())
-
-	def search_in_treeview(self, keyword):
+	def filter_in_treeview(self):
 		self.data_store.clear()
-		self.pkg_list_all = self.dnf.get_filtered_in_loaded_packages(keyword)
+		self.pkg_list_all = self.dnf.get_packages(self.sort_type, self.search_field.get_text())
 		self.populate_liststore()
 	
 	def populate_liststore(self, min=0):
@@ -160,7 +157,8 @@ class Application():
 	
 	def sort_button_action(self, sort_type):
 		self.sort_popover.popdown()
-		self.initialize_treeview(sort_type)
+		self.sort_type = sort_type
+		self.filter_in_treeview()
 
 	def on_sort_all_button_clicked(self, widget):
 		if widget.get_active():
@@ -175,7 +173,7 @@ class Application():
 			self.sort_button_action("installed")
 	
 	def on_search_activated(self, widget):
-		self.search_in_treeview(widget.get_text())
+		self.filter_in_treeview()
 	
 	def on_about_clicked(self, widget):
 		self.about_dialog.show()
