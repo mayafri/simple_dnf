@@ -5,21 +5,17 @@ class Backend(dnfdaemon.client.Client):
 	def __init__(self):
 		dnfdaemon.client.Client.__init__(self)
 	
-	def get_sorted_packages(self, sort_type, icon_name_installed):
+	def load_packages(self, icon_name_installed):
 		pkg_list_all = []
 		self.packages_list = []
 
 		if self.Lock():
-			if sort_type == "all" or sort_type == "available":
-				pkg_list_available = self.GetPackages('available', ['size'])
-			if sort_type == "all" or sort_type == "installed":
-				pkg_list_installed = self.GetPackages('installed', ['size'])
+			pkg_list_available = self.GetPackages('available', ['size'])
+			pkg_list_installed = self.GetPackages('installed', ['size'])
 			self.Unlock()
 
-		if sort_type == "all" or sort_type == "available":
 			for i in pkg_list_available:
 				pkg_list_all.append([False, ""]+i)
-		if sort_type == "all" or sort_type == "installed":
 			for i in pkg_list_installed:
 				pkg_list_all.append([True, icon_name_installed]+i)
 
@@ -35,10 +31,18 @@ class Backend(dnfdaemon.client.Client):
 			size = str(round(i[3]/1024/1024, 2))+" M"
 			self.packages_list.append([state, icon, name, version, arch, size])
 
-		return self.packages_list
+	def get_packages(self, sort_type=False, keyword=False):
+		if sort_type == "available":
+			pkg_list = [i for i in self.packages_list if not i[1]]
+		elif sort_type == "installed":
+			pkg_list = [i for i in self.packages_list if i[1]]
+		else:
+			pkg_list = self.packages_list
 	
-	def get_filtered_in_loaded_packages(self, keyword):
-		return [i for i in self.packages_list if keyword.lower() in i[2].lower()]
+		if(keyword):
+			return [i for i in pkg_list if keyword.lower() in i[2].lower()]
+		else:
+			return pkg_list
 
 	def simulate_transaction(self, list_install, list_remove):
 		if self.Lock():
