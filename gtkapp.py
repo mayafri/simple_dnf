@@ -15,17 +15,16 @@ class Application():
 		self.mainbox = self.builder.get_object("mainbox")
 		self.loading_window = self.builder.get_object("loading_window")
 		self.loading_screen = self.builder.get_object("loading_screen")
-
 		self.confirm_dialog = self.builder.get_object("confirm_dialog")
 		self.transaction_dialog = self.builder.get_object("transaction_dialog")
 		self.finished_dialog = self.builder.get_object("finished_dialog")
 		self.about_dialog = self.builder.get_object("about_dialog")
-
 		self.apply_button = self.builder.get_object("apply_button")
 		self.sort_button = self.builder.get_object("sort_button")
 		self.sort_popover = self.builder.get_object("sort_popover")
 		self.search_field = self.builder.get_object("search_field")
-		self.transaction_progressbar = self.builder.get_object("transaction_progressbar")
+		self.transaction_progressbar = self.builder.get_object(
+													  "transaction_progressbar")
 
 		self.window.set_icon_name("system-software-install")
 		self.window.set_wmclass("Simple DNF", "Simple DNF")
@@ -88,7 +87,8 @@ class Application():
 
 	def filter_in_treeview(self):
 		self.data_store.clear()
-		self.pkg_list_all = self.dnf.get_packages(self.sort_type, self.search_field.get_text())
+		self.pkg_list_all = self.dnf.get_packages(self.sort_type,
+												  self.search_field.get_text())
 		self.populate_liststore()
 	
 	def populate_liststore(self, min=0):
@@ -132,11 +132,10 @@ class Application():
 	def on_apply_clicked(self, widget):
 		self.apply_button.set_sensitive(False)
 
-		list_of_changes = \
-		self.dnf.simulate_transaction(self.list_install, self.list_remove)
+		changes = self.dnf.simul_transaction(self.list_install,self.list_remove)
 
-		if(list_of_changes):
-			self.builder.get_object("will_be_applied_buf").set_text(list_of_changes)
+		if(changes):
+			self.builder.get_object("will_be_applied_buf").set_text(changes)
 			self.confirm_dialog.show()
 		else:
 			self.apply_button.set_sensitive(True)
@@ -151,7 +150,7 @@ class Application():
 
 		def ProgressBarUpdate(data):
 			self.transaction_progressbar.pulse()
-			progress = self.dnf.download_total_frac
+			progress = self.dnf.get_download_progress()
 			self.transaction_progressbar.set_fraction(progress)
 			return True
 		
