@@ -99,5 +99,5 @@ class Backend(dnfdaemon.client.Client):
 	def on_DownloadProgress(self, name, frac, total_frac, total_files):
 		self.download_total_frac = total_frac
 	
-	def get_download_progress():
+	def get_download_progress(self):
 		return self.download_total_frac
