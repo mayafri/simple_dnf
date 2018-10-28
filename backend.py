@@ -45,7 +45,7 @@ class Backend(dnfdaemon.client.Client):
 		else:
 			return pkg_list
 
-	def simulate_transaction(self, list_install, list_remove):
+	def simul_transaction(self, list_install, list_remove):
 		if self.Lock():
 			try:
 				self.Remove(' '.join(list_remove))
@@ -98,4 +98,6 @@ class Backend(dnfdaemon.client.Client):
 
 	def on_DownloadProgress(self, name, frac, total_frac, total_files):
 		self.download_total_frac = total_frac
-			
+	
+	def get_download_progress():
+		return self.download_total_frac
