@@ -1,4 +1,5 @@
 import gi, backend
+import dnfdaemon.client
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gtk, Gio
 
@@ -11,14 +12,18 @@ class Application():
 		self.builder.connect_signals(self)
 
 		self.data_store = self.builder.get_object("data_store")
+
 		self.window = self.builder.get_object("window")
 		self.mainbox = self.builder.get_object("mainbox")
 		self.loading_window = self.builder.get_object("loading_window")
 		self.loading_screen = self.builder.get_object("loading_screen")
+
 		self.confirm_dialog = self.builder.get_object("confirm_dialog")
 		self.transaction_dialog = self.builder.get_object("transaction_dialog")
 		self.finished_dialog = self.builder.get_object("finished_dialog")
 		self.about_dialog = self.builder.get_object("about_dialog")
+		self.error_lock_dialog = self.builder.get_object("error_lock_dialog")
+
 		self.apply_button = self.builder.get_object("apply_button")
 		self.sort_button = self.builder.get_object("sort_button")
 		self.sort_popover = self.builder.get_object("sort_popover")
@@ -77,7 +82,11 @@ class Application():
 		self.list_install = []
 		self.list_remove = []
 		
-		self.dnf.load_packages("emblem-ok-symbolic")
+		try:
+			self.dnf.load_packages("emblem-ok-symbolic")
+		except dnfdaemon.client.DaemonError:
+			self.error_lock_dialog.show()
+		
 		self.filter_in_treeview()
 
 		self.unset_loading_screen()
@@ -193,8 +202,14 @@ class Application():
 	def on_about_closed(self, widget, rep=None):
 		widget.hide()
 		return True
+	
+	def on_error_lock_retry_clicked(self, widget):
+		self.error_lock_dialog.hide()
+		self.dnf.Lock()
+		self.initialize_treeview()
 
 	def on_application_close(self, widget):
+		self.dnf.Exit()
 		Gtk.main_quit()
 
 	def application_run(self):

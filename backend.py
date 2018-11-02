@@ -5,20 +5,19 @@ class Backend(dnfdaemon.client.Client):
 	def __init__(self):
 		dnfdaemon.client.Client.__init__(self)
 		self.SetWatchdogState(True)
+		self.Lock()
 	
 	def load_packages(self, icon_name_installed):
 		pkg_list_all = []
 		self.packages_list = []
 
-		if self.Lock():
-			pkg_list_available = self.GetPackages('available', ['size'])
-			pkg_list_installed = self.GetPackages('installed', ['size'])
-			self.Unlock()
+		pkg_list_available = self.GetPackages('available', ['size'])
+		pkg_list_installed = self.GetPackages('installed', ['size'])
 
-			for i in pkg_list_available:
-				pkg_list_all.append([False, ""]+i)
-			for i in pkg_list_installed:
-				pkg_list_all.append([True, icon_name_installed]+i)
+		for i in pkg_list_available:
+			pkg_list_all.append([False, ""]+i)
+		for i in pkg_list_installed:
+			pkg_list_all.append([True, icon_name_installed]+i)
 
 		pkg_list_all.sort(key=itemgetter(2))
 		
@@ -46,16 +45,15 @@ class Backend(dnfdaemon.client.Client):
 			return pkg_list
 
 	def simul_transaction(self, list_install, list_remove):
-		if self.Lock():
-			try:
-				self.Remove(' '.join(list_remove))
-				self.Install(' '.join(list_install))
-				transaction = self.GetTransaction()
-			except dnfdaemon.client.DaemonError:
-				self.Unlock()
-				dnfdaemon.client.Client.__init__(self)
-				return False
+		try:
+			self.Remove(' '.join(list_remove))
+			self.Install(' '.join(list_install))
+			transaction = self.GetTransaction()
+		except dnfdaemon.client.DaemonError:
 			self.Unlock()
+			dnfdaemon.client.Client.__init__(self)
+			self.Lock()
+			return False
 		
 		final_list_install = []
 		final_list_remove = []
@@ -89,12 +87,10 @@ class Backend(dnfdaemon.client.Client):
 	
 	def execute_transaction(self, list_install, list_remove):
 		self.download_total_frac = 0
-		if self.Lock():
-			self.Remove(' '.join(list_remove))
-			self.Install(' '.join(list_install))
-			self.RunTransaction()
-			self.Unlock()
-			return True
+		self.Remove(' '.join(list_remove))
+		self.Install(' '.join(list_install))
+		self.RunTransaction()
+		return True
 
 	def on_DownloadProgress(self, name, frac, total_frac, total_files):
 		self.download_total_frac = total_frac
