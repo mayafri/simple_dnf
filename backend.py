@@ -7,17 +7,15 @@ class Backend(dnfdaemon.client.Client):
 		self.SetWatchdogState(True)
 		self.Lock()
 	
-	def load_packages(self, icon_name_installed):
+	def load_packages(self, icon_name_inst):
 		pkg_list_all = []
 		self.packages_list = []
 
 		pkg_list_available = self.GetPackages('available', ['size'])
 		pkg_list_installed = self.GetPackages('installed', ['size'])
 
-		for i in pkg_list_available:
-			pkg_list_all.append([False, ""]+i)
-		for i in pkg_list_installed:
-			pkg_list_all.append([True, icon_name_installed]+i)
+		pkg_list_all  = [[False,""]+i for i in pkg_list_available]
+		pkg_list_all += [[True,icon_name_inst]+i for i in pkg_list_installed]
 
 		pkg_list_all.sort(key=itemgetter(2))
 		
@@ -68,11 +66,9 @@ class Backend(dnfdaemon.client.Client):
 
 		for i in transaction[1]:
 			if i[0] == 'install':
-				for ii in i[1]:
-					final_list_install.append(CrypticToCompleteName(ii[0]))
+				final_list_install=[CrypticToCompleteName(ii[0]) for ii in i[1]]
 			if i[0] == 'remove':
-				for ii in i[1]:
-					final_list_remove.append(CrypticToCompleteName(ii[0]))
+				final_list_remove =[CrypticToCompleteName(ii[0]) for ii in i[1]]
 		
 		texte = ""
 		if len(final_list_install):
