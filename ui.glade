@@ -116,6 +116,8 @@ https://hyakosm.net</property>
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">25</property>
+            <property name="margin_right">25</property>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
@@ -136,6 +138,7 @@ https://hyakosm.net</property>
                 <property name="height_request">80</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">25</property>
                 <property name="hexpand">True</property>
                 <property name="label" translatable="yes">DNF Daemon is locked.
 Please close all other DNF relative applications.</property>
@@ -220,6 +223,8 @@ Please close all other DNF relative applications.</property>
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_left">25</property>
+            <property name="margin_right">25</property>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
@@ -240,6 +245,7 @@ Please close all other DNF relative applications.</property>
                 <property name="height_request">80</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_left">25</property>
                 <property name="hexpand">True</property>
                 <property name="label" translatable="yes">Operations successfully finished!</property>
               </object>
