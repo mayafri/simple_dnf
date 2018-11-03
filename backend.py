@@ -82,14 +82,27 @@ class Backend(dnfdaemon.client.Client):
 		return texte
 	
 	def execute_transaction(self, list_install, list_remove):
-		self.download_total_frac = 0
+		self.install_total_frac = 0
+		if list_install:
+			self.download_total_frac = 0
+		else:
+			self.download_total_frac = 1
+
 		self.Remove(' '.join(list_remove))
 		self.Install(' '.join(list_install))
 		self.RunTransaction()
+		
 		return True
 
 	def on_DownloadProgress(self, name, frac, total_frac, total_files):
 		self.download_total_frac = total_frac
 	
+	def on_RPMProgress(self, package, action, te_current, te_total,
+					   ts_current, ts_total):
+		self.install_total_frac = ts_current / ts_total
+	
 	def get_download_progress(self):
 		return self.download_total_frac
+	
+	def get_install_progress(self):
+		return self.install_total_frac

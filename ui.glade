@@ -68,6 +68,9 @@ https://hyakosm.net</property>
     <property name="default_height">200</property>
     <property name="type_hint">dialog</property>
     <property name="deletable">False</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="can_focus">False</property>
@@ -557,10 +560,11 @@ Please close all other DNF relative applications.</property>
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="margin_left">20</property>
-        <property name="margin_right">20</property>
+        <property name="margin_left">25</property>
+        <property name="margin_right">25</property>
+        <property name="margin_top">25</property>
+        <property name="margin_bottom">25</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">40</property>
         <child>
           <object class="GtkAccelLabel">
             <property name="visible">True</property>
@@ -570,20 +574,36 @@ Please close all other DNF relative applications.</property>
           </object>
           <packing>
             <property name="expand">True</property>
-            <property name="fill">True</property>
+            <property name="fill">False</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkProgressBar" id="transaction_progressbar">
+          <object class="GtkProgressBar" id="dl_progressbar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="valign">start</property>
+            <property name="text" translatable="yes">Download</property>
+            <property name="show_text">True</property>
           </object>
           <packing>
             <property name="expand">True</property>
-            <property name="fill">True</property>
+            <property name="fill">False</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkProgressBar" id="inst_progressbar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="valign">start</property>
+            <property name="text" translatable="yes">Install / remove</property>
+            <property name="show_text">True</property>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
