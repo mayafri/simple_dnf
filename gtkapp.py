@@ -132,6 +132,8 @@ class Application():
 				self.list_install.remove(complete_name)
 			else:
 				self.list_remove.append(complete_name)
+		
+		self.dnf.alter_package(pkg_name, pkg_version, pkg_arch, pkg_new_state)
 
 		if len(self.list_install) == len(self.list_remove) == 0:
 			self.apply_button.set_sensitive(False)
@@ -192,6 +194,10 @@ class Application():
 	def on_sort_installed_button_clicked(self, widget):
 		if widget.get_active():
 			self.sort_button_action("installed")
+	
+	def on_sort_altered_button_clicked(self, widget):
+		if widget.get_active():
+			self.sort_button_action("altered")
 	
 	def on_search_activated(self, widget):
 		self.filter_in_treeview()
