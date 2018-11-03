@@ -28,8 +28,8 @@ class Application():
 		self.sort_button = self.builder.get_object("sort_button")
 		self.sort_popover = self.builder.get_object("sort_popover")
 		self.search_field = self.builder.get_object("search_field")
-		self.transaction_progressbar = self.builder.get_object(
-													  "transaction_progressbar")
+		self.dl_progressbar = self.builder.get_object("dl_progressbar")
+		self.inst_progressbar = self.builder.get_object("inst_progressbar")
 
 		self.window.set_icon_name("system-software-install")
 		self.window.set_wmclass("Simple DNF", "Simple DNF")
@@ -158,9 +158,12 @@ class Application():
 		self.transaction_dialog.show()
 
 		def ProgressBarUpdate(data):
-			self.transaction_progressbar.pulse()
-			progress = self.dnf.get_download_progress()
-			self.transaction_progressbar.set_fraction(progress)
+			self.dl_progressbar.pulse()
+			self.dl_progressbar.set_fraction(self.dnf.get_download_progress())
+
+			self.inst_progressbar.pulse()
+			self.inst_progressbar.set_fraction(self.dnf.get_install_progress())
+
 			return True
 		
 		GLib.timeout_add(100, ProgressBarUpdate, None)
