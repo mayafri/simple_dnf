@@ -1,0 +1,131 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2018-11-02 22:37-0400\n"
+"PO-Revision-Date: 2018-11-02 23:49-0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: backend.py:135
+msgid "These packages will be installed:"
+msgstr "Ces paquets vont être installés :"
+
+#: backend.py:139
+msgid "These packages will be removed:"
+msgstr "Ces paquets vont être supprimés :"
+
+#: gtkapp.py:68
+msgid "Name"
+msgstr "Nom"
+
+#: gtkapp.py:68
+msgid "Version"
+msgstr "Version"
+
+#: gtkapp.py:68
+msgid "Arch"
+msgstr "Architecture"
+
+#: gtkapp.py:68
+msgid "Size"
+msgstr "Taille"
+
+#: ui.glade:64
+msgid "Error"
+msgstr "Erreur"
+
+#: ui.glade:85
+msgid "Retry"
+msgstr "Réessayer"
+
+#: ui.glade:99 ui.glade:205
+msgid "Quit"
+msgstr "Quitter"
+
+#: ui.glade:146
+msgid ""
+"DNF Daemon is locked.\n"
+"Please close all other DNF relative applications."
+msgstr ""
+"Le démon DNF est verrouillé.\n"
+"Merci de fermer les autres applications qui utilisent DNF."
+
+#: ui.glade:167
+msgid "Finished"
+msgstr "Terminé"
+
+#: ui.glade:190
+msgid "Return to list"
+msgstr "Retourner à la liste"
+
+#: ui.glade:253
+msgid "Operations successfully finished!"
+msgstr "Opérations terminées avec succès !"
+
+#: ui.glade:322
+msgid "Loading package cache..."
+msgstr "Chargement du cache des paquets..."
+
+#: ui.glade:354
+msgid "About"
+msgstr "À propos"
+
+#: ui.glade:380
+msgid "All packages"
+msgstr "Tous les paquets"
+
+#: ui.glade:396
+msgid "Available"
+msgstr "Paquets disponibles"
+
+#: ui.glade:412
+msgid "Installed"
+msgstr "Paquets installés"
+
+#: ui.glade:428
+msgid "Altered"
+msgstr "Paquets sélectionnés"
+
+#: ui.glade:456
+msgid "Simple DNF"
+msgstr "Simple DNF"
+
+#: ui.glade:510
+msgid "Apply changes"
+msgstr "Appliquer les changements"
+
+#: ui.glade:564
+msgid "Processing"
+msgstr "Application des modifications"
+
+#: ui.glade:590
+msgid "Please wait, DNF is applying changes."
+msgstr "Merci de patienter, DNF applique les modifications choisies."
+
+#: ui.glade:603
+msgid "Download"
+msgstr "Téléchargement"
+
+#: ui.glade:617
+msgid "Install / remove"
+msgstr "Installation / suppression"
+
+#: ui.glade:632
+msgid "Apply the following changes?"
+msgstr "Voulez-vous appliquer ces changements ?"
+
+#: ui.glade:654
+msgid "Cancel"
+msgstr "Annuler"
+
+#: ui.glade:668
+msgid "Let's go!"
+msgstr "C'est parti !"

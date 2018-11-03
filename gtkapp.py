@@ -1,7 +1,11 @@
-import gi, backend
-import dnfdaemon.client
+import gi, backend, locale, dnfdaemon.client
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gtk, Gio
+from locale import gettext as _
+
+locale.bindtextdomain('simple_dnf', 'locales')
+locale.textdomain('simple_dnf')
+locale.setlocale(locale.LC_ALL, '')
 
 class Application():
 	def __init__(self):
@@ -63,7 +67,7 @@ class Application():
 		column_status = Gtk.TreeViewColumn("", pixbuf_renderer, icon_name=1)
 		packages_treeview.append_column(column_status)
 
-		titles = ['Name', 'Version', 'Arch', 'Size']
+		titles = [_('Name'), _('Version'), _('Arch'), _('Size')]
 		sizes = [2, 1.5,1,1]
 		text_renderer = Gtk.CellRendererText()
 
