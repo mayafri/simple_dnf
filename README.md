@@ -11,7 +11,6 @@ Fonctionnalités :
 - [x] Recherche instantanée
 - [x] Vues triées
 - [x] Traductions française et anglaise
-- [ ] Gestion des confirmations GPG
 - [ ] Affichage par groupe
 
 Dépendance : `python3-dnfdaemon`
@@ -27,7 +26,6 @@ Features :
 - [x] Instant search
 - [x] Sorted lists
 - [x] English and French translations
-- [ ] GPG Management
 - [ ] Groups display
 
 Requirement : `python3-dnfdaemon`
