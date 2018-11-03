@@ -1,5 +1,6 @@
-import dnfdaemon.client
+import dnfdaemon.client, locale
 from operator import itemgetter
+from locale import gettext as _
 
 class Backend(dnfdaemon.client.Client):
 	def __init__(self):
@@ -8,6 +9,12 @@ class Backend(dnfdaemon.client.Client):
 		self.Lock()
 	
 	def load_packages(self, icon_name_inst):
+		"""
+			Load DNF packages list in memory.
+
+			:param icon_name_inst: Specify the icon name of installed packages,
+			                       useful for work with GTK Treeview.
+		"""
 		pkg_list_all = []
 		self.packages_list = []
 
@@ -30,6 +37,15 @@ class Backend(dnfdaemon.client.Client):
 			self.packages_list.append([state, icon, name, version, arch, size])
 	
 	def alter_package(self, name, version, arch, new_check_bool):
+		"""
+			Check / uncheck a package in list.
+
+			:param name: Name of targeted package.
+			:param version: Version string of targeted package.
+			:param arch: Arch string of targeted package.
+			:param new_check_bool: New check state (true = will be installed,
+			                       false = will be removed).
+		"""
 		def AlterFilter(pkg_list_element):
 			if pkg_list_element[2] == name \
 			   and pkg_list_element[3] == version \
@@ -44,6 +60,20 @@ class Backend(dnfdaemon.client.Client):
 			i[0] = new_check_bool
 
 	def get_packages(self, sort_type=False, keyword=False):
+		"""
+			Get a sublist of packages depending on various criterias.
+
+			:param sort_type: [available | installed | altered] (optional)
+			                  "available" => will select available packages
+							  "installed" => will select installed packages
+							  "altered" => will select packages checked by user
+							  none => will select all packages
+			
+			:param keyword: Select only packages who contains the keyword
+			                substring in their name. (optional)
+			
+			:return: Sorted packages list
+		"""
 		if sort_type == "available":
 			pkg_list = [i for i in self.packages_list if not i[1]]
 		elif sort_type == "installed":
@@ -59,6 +89,19 @@ class Backend(dnfdaemon.client.Client):
 			return pkg_list
 
 	def simul_transaction(self, list_install, list_remove):
+		"""
+			Simulate a DNF transaction to obtain a list of packages to be
+			installed and removed including dependencies. Useful to ask user
+			approbation before making definitive changes.
+
+			:param list_install: List of install selected packages
+			:param list_remove: List of remove selected packages
+
+			Each list contains strings formated this way :
+			name-version.arch (example : 2ping-4.1-4.fc29-noarch)
+
+			:return: A text report of future changes.
+		"""
 		try:
 			self.Remove(' '.join(list_remove))
 			self.Install(' '.join(list_install))
@@ -88,16 +131,27 @@ class Backend(dnfdaemon.client.Client):
 		
 		texte = ""
 		if len(final_list_install):
-			texte += "These packages will be installed:\n\n"
+			texte += _("These packages will be installed:")+"\n\n"
 			texte += '\n'.join(final_list_install)
 			texte += '\n\n'
 		if len(final_list_remove):
-			texte += "These packages will be removed:\n\n"
+			texte += _("These packages will be removed:")+"\n\n"
 			texte += '\n'.join(final_list_remove)
 		
 		return texte
 	
 	def execute_transaction(self, list_install, list_remove):
+		"""
+			Execute a DNF transaction for given packages.
+
+			:param list_install: List of install selected packages
+			:param list_remove: List of remove selected packages
+
+			Each list contains strings formated this way :
+			name-version.arch (example : 2ping-4.1-4.fc29-noarch)
+
+			:return: True when transaction is finished.
+		"""
 		self.install_total_frac = 0
 		if list_install:
 			self.download_total_frac = 0
@@ -118,7 +172,17 @@ class Backend(dnfdaemon.client.Client):
 		self.install_total_frac = ts_current / ts_total
 	
 	def get_download_progress(self):
+		"""
+			Return download progress.
+
+			:return: A decimal number between 0 and 1.
+		"""
 		return self.download_total_frac
 	
 	def get_install_progress(self):
+		"""
+			Return (un)install progress.
+
+			:return: A decimal number between 0 and 1.
+		"""
 		return self.install_total_frac
