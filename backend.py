@@ -28,12 +28,28 @@ class Backend(dnfdaemon.client.Client):
 			arch = longname[4]
 			size = str(round(i[3]/1024/1024, 2))+" M"
 			self.packages_list.append([state, icon, name, version, arch, size])
+	
+	def alter_package(self, name, version, arch, new_check_bool):
+		def AlterFilter(pkg_list_element):
+			if pkg_list_element[2] == name \
+			   and pkg_list_element[3] == version \
+			   and pkg_list_element[4] == arch:
+				return True
+			else:
+				return False
+
+		filtered = filter(AlterFilter, self.packages_list)
+
+		for i in filtered:
+			i[0] = new_check_bool
 
 	def get_packages(self, sort_type=False, keyword=False):
 		if sort_type == "available":
 			pkg_list = [i for i in self.packages_list if not i[1]]
 		elif sort_type == "installed":
 			pkg_list = [i for i in self.packages_list if i[1]]
+		elif sort_type == "altered":
+			pkg_list = [i for i in self.packages_list if i[0] != bool(i[1])]
 		else:
 			pkg_list = self.packages_list
 	
@@ -91,7 +107,7 @@ class Backend(dnfdaemon.client.Client):
 		self.Remove(' '.join(list_remove))
 		self.Install(' '.join(list_install))
 		self.RunTransaction()
-		
+
 		return True
 
 	def on_DownloadProgress(self, name, frac, total_frac, total_files):
