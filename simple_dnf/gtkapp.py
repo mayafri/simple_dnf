@@ -53,7 +53,7 @@ class Application():
 		self.inst_progressbar = self.builder.get_object("inst_progressbar")
 
 		self.window.set_icon_name("system-software-install")
-		self.window.set_wmclass("Simple DNF", "Simple DNF")
+		GLib.set_prgname('simple_dnf')
 
 		self.sort_type = "all" # Default sort type
 		self.create_treeview()
