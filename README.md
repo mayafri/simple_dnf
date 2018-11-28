@@ -15,6 +15,8 @@ Fonctionnalités :
 
 Dépendance : `python3-dnfdaemon`
 
+ L'application utilise le backend *[dnfdaemon](https://github.com/manatools/dnfdaemon)* : un grand merci à son auteur !
+
 # [EN] Simple DNF
 
 *Simple DNF* is a **fast** and **simple** graphical utility to manage packages and perform basic operations, like *Synaptic* but for DNF-based Linux distributions.
@@ -31,3 +33,5 @@ Features :
 Requirement : `python3-dnfdaemon`
 
 ![](https://hyakosm.net/images_blog/simple_dnf.png)
+
+ This app uses *[dnfdaemon](https://github.com/manatools/dnfdaemon)* backend : special thanks to his author!
