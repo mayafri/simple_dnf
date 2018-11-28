@@ -30,4 +30,4 @@ Features :
 
 Requirement : `python3-dnfdaemon`
 
-![](https://raw.githubusercontent.com/hyakosm/simple_dnf/master/screenshot.png)
+![](https://hyakosm.net/images_blog/simple_dnf.png)
