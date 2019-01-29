@@ -11,6 +11,7 @@ Fonctionnalités :
 - [x] Recherche instantanée
 - [x] Vues triées
 - [x] Traductions française et anglaise
+- [x] Interface universelle (Gnome, KDE, ...)
 - [ ] Affichage par groupe
 
 Dépendance : `python3-dnfdaemon`
@@ -28,10 +29,13 @@ Features :
 - [x] Instant search
 - [x] Sorted lists
 - [x] English and French translations
+- [x] Universal UI (Gnome, KDE, ...)
 - [ ] Groups display
 
 Requirement : `python3-dnfdaemon`
 
 ![](https://hyakosm.net/images_blog/simple_dnf.png)
+
+![](https://hyakosm.net/images_blog/simple_dnf_kde.png)
 
  This app uses *[dnfdaemon](https://github.com/manatools/dnfdaemon)* backend : special thanks to his author!
