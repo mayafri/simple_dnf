@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Simple DNF.  If not, see <https://www.gnu.org/licenses/>.
 
-import gi, backend, locale, dnfdaemon.client
+import gi, backend, locale, os, dnfdaemon.client
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gtk, Gio
 from locale import gettext as _
@@ -29,7 +29,12 @@ class Application():
 		self.dnf = backend.Backend()
 
 		self.builder = Gtk.Builder()
-		self.builder.add_from_file("ui.glade")
+
+		if os.environ.get("XDG_CURRENT_DESKTOP") == "GNOME":
+			self.builder.add_from_file("ui.glade")
+		else:
+			self.builder.add_from_file("ui-classic.glade")
+
 		self.builder.connect_signals(self)
 
 		self.data_store = self.builder.get_object("data_store")
