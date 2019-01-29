@@ -14,7 +14,6 @@
 https://hyakosm.net</property>
     <property name="logo_icon_name">system-software-install</property>
     <property name="license_type">gpl-3-0</property>
-    <signal name="delete-event" handler="on_about_closed" swapped="no"/>
     <child type="titlebar">
       <placeholder/>
     </child>
