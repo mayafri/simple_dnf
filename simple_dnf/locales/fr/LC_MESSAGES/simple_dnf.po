@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2018-11-02 22:37-0400\n"
-"PO-Revision-Date: 2018-11-02 23:49-0400\n"
+"POT-Creation-Date: 2019-01-29 14:25+0100\n"
+"PO-Revision-Date: 2019-01-29 14:25+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -14,43 +14,44 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: backend.py:135
+#: simple_dnf/backend.py:151
 msgid "These packages will be installed:"
 msgstr "Ces paquets vont être installés :"
 
-#: backend.py:139
+#: simple_dnf/backend.py:155
 msgid "These packages will be removed:"
 msgstr "Ces paquets vont être supprimés :"
 
-#: gtkapp.py:68
+#: simple_dnf/gtkapp.py:87
 msgid "Name"
 msgstr "Nom"
 
-#: gtkapp.py:68
+#: simple_dnf/gtkapp.py:87
 msgid "Version"
 msgstr "Version"
 
-#: gtkapp.py:68
+#: simple_dnf/gtkapp.py:87
 msgid "Arch"
 msgstr "Architecture"
 
-#: gtkapp.py:68
+#: simple_dnf/gtkapp.py:87
 msgid "Size"
 msgstr "Taille"
 
-#: ui.glade:64
+#: simple_dnf/ui-classic.glade:64 simple_dnf/ui.glade:64
 msgid "Error"
 msgstr "Erreur"
 
-#: ui.glade:85
+#: simple_dnf/ui-classic.glade:85 simple_dnf/ui.glade:85
 msgid "Retry"
 msgstr "Réessayer"
 
-#: ui.glade:99 ui.glade:205
+#: simple_dnf/ui-classic.glade:99 simple_dnf/ui-classic.glade:205
+#: simple_dnf/ui.glade:99 simple_dnf/ui.glade:205
 msgid "Quit"
 msgstr "Quitter"
 
-#: ui.glade:146
+#: simple_dnf/ui-classic.glade:146 simple_dnf/ui.glade:146
 msgid ""
 "DNF Daemon is locked.\n"
 "Please close all other DNF relative applications."
@@ -58,74 +59,82 @@ msgstr ""
 "Le démon DNF est verrouillé.\n"
 "Merci de fermer les autres applications qui utilisent DNF."
 
-#: ui.glade:167
+#: simple_dnf/ui-classic.glade:167 simple_dnf/ui.glade:167
 msgid "Finished"
 msgstr "Terminé"
 
-#: ui.glade:190
+#: simple_dnf/ui-classic.glade:190 simple_dnf/ui.glade:190
 msgid "Return to list"
 msgstr "Retourner à la liste"
 
-#: ui.glade:253
+#: simple_dnf/ui-classic.glade:253 simple_dnf/ui.glade:253
 msgid "Operations successfully finished!"
 msgstr "Opérations terminées avec succès !"
 
-#: ui.glade:322
+#: simple_dnf/ui-classic.glade:322 simple_dnf/ui.glade:322
 msgid "Loading package cache..."
 msgstr "Chargement du cache des paquets..."
 
-#: ui.glade:354
+#: simple_dnf/ui-classic.glade:354 simple_dnf/ui.glade:354
 msgid "About"
 msgstr "À propos"
 
-#: ui.glade:380
+#: simple_dnf/ui-classic.glade:380 simple_dnf/ui.glade:380
 msgid "All packages"
 msgstr "Tous les paquets"
 
-#: ui.glade:396
+#: simple_dnf/ui-classic.glade:396 simple_dnf/ui.glade:396
 msgid "Available"
 msgstr "Paquets disponibles"
 
-#: ui.glade:412
+#: simple_dnf/ui-classic.glade:412 simple_dnf/ui.glade:412
 msgid "Installed"
 msgstr "Paquets installés"
 
-#: ui.glade:428
+#: simple_dnf/ui-classic.glade:428 simple_dnf/ui.glade:428
 msgid "Altered"
 msgstr "Paquets sélectionnés"
 
-#: ui.glade:456
-msgid "Simple DNF"
-msgstr "Simple DNF"
+#: simple_dnf/ui-classic.glade:503
+msgid "Menu"
+msgstr "Menu"
 
-#: ui.glade:510
+#: simple_dnf/ui-classic.glade:546
+msgid "View"
+msgstr "Affichage"
+
+#: simple_dnf/ui-classic.glade:564 simple_dnf/ui.glade:510
 msgid "Apply changes"
 msgstr "Appliquer les changements"
 
-#: ui.glade:564
+#: simple_dnf/ui-classic.glade:618 simple_dnf/ui.glade:564
 msgid "Processing"
 msgstr "Application des modifications"
 
-#: ui.glade:590
+#: simple_dnf/ui-classic.glade:644 simple_dnf/ui.glade:590
 msgid "Please wait, DNF is applying changes."
 msgstr "Merci de patienter, DNF applique les modifications choisies."
 
-#: ui.glade:603
+#: simple_dnf/ui-classic.glade:657 simple_dnf/ui.glade:603
 msgid "Download"
 msgstr "Téléchargement"
 
-#: ui.glade:617
+#: simple_dnf/ui-classic.glade:671 simple_dnf/ui.glade:617
 msgid "Install / remove"
 msgstr "Installation / suppression"
 
-#: ui.glade:632
+#: simple_dnf/ui-classic.glade:686 simple_dnf/ui.glade:632
 msgid "Apply the following changes?"
 msgstr "Voulez-vous appliquer ces changements ?"
 
-#: ui.glade:654
+#: simple_dnf/ui-classic.glade:708 simple_dnf/ui.glade:654
 msgid "Cancel"
 msgstr "Annuler"
 
-#: ui.glade:668
+#: simple_dnf/ui-classic.glade:722 simple_dnf/ui.glade:668
 msgid "Let's go!"
 msgstr "C'est parti !"
+
+#: simple_dnf/ui.glade:456
+msgid "Simple DNF"
+msgstr "Simple DNF"
