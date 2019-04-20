@@ -94,7 +94,6 @@ class Application():
         text_renderer = Gtk.CellRendererText()
 
         for (i, (title, size)) in enumerate(zip(titles, sizes)):
-            print(i, title, size)
             column = Gtk.TreeViewColumn(title, text_renderer, text=i+2)
             column.set_resizable(True)
             column.set_fixed_width(175*size)
