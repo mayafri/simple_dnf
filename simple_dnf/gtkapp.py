@@ -30,7 +30,7 @@ class Application():
 
         self.builder = Gtk.Builder()
 
-        if os.environ.get("XDG_CURRENT_DESKTOP") == "GNOME":
+        if "GNOME" in os.environ.get("XDG_CURRENT_DESKTOP"):
             self.builder.add_from_file("ui.glade")
         else:
             self.builder.add_from_file("ui-classic.glade")
@@ -89,8 +89,8 @@ class Application():
         column_status = Gtk.TreeViewColumn("", pixbuf_renderer, icon_name=1)
         packages_treeview.append_column(column_status)
 
-        titles = [_('Name'), _('Version'), _('Arch'), _('Size')]
-        sizes = [2, 1.5,1,1]
+        titles = [_('Name'), _('Version'), _('Arch'), _("Repository"), _('Size')]
+        sizes = [2, 1.5, 1, 1, 1]
         text_renderer = Gtk.CellRendererText()
 
         for (i, (title, size)) in enumerate(zip(titles, sizes)):

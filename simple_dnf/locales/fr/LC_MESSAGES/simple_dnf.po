@@ -38,6 +38,10 @@ msgstr "Architecture"
 msgid "Size"
 msgstr "Taille"
 
+#: simple_dnf/gtkapp.py:87
+msgid "Repository"
+msgstr "Dépôt"
+
 #: simple_dnf/ui-classic.glade:64 simple_dnf/ui.glade:64
 msgid "Error"
 msgstr "Erreur"

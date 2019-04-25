@@ -43,15 +43,17 @@ class Backend(dnfdaemon.client.Client):
 
 		pkg_list_all.sort(key=itemgetter(2))
 		
-		for i in pkg_list_all:
-			longname = i[2].split(',')
-			state = i[0]
-			icon = i[1]
+		for pkg in pkg_list_all:
+			print(pkg)
+			longname = pkg[2].split(',')
+			state = pkg[0]
+			icon = pkg[1]
 			name = longname[0]
 			version = longname[2]+'-'+longname[3]
 			arch = longname[4]
-			size = str(round(i[3]/1024/1024, 2))+" M"
-			self.packages_list.append([state, icon, name, version, arch, size])
+			repo = longname[5]
+			size = str(round(pkg[3]/1024/1024, 2))+" M"
+			self.packages_list.append([state, icon, name, version, arch, repo, size])
 	
 	def alter_package(self, name, version, arch, new_check_bool):
 		"""
@@ -64,12 +66,7 @@ class Backend(dnfdaemon.client.Client):
 			                       false = will be removed).
 		"""
 		def AlterFilter(pkg_list_element):
-			if pkg_list_element[2] == name \
-			   and pkg_list_element[3] == version \
-			   and pkg_list_element[4] == arch:
-				return True
-			else:
-				return False
+			return pkg_list_element[2:5] == [name, version, arch]
 
 		filtered = filter(AlterFilter, self.packages_list)
 
@@ -91,19 +88,14 @@ class Backend(dnfdaemon.client.Client):
 			
 			:return: Sorted packages list
 		"""
-		if sort_type == "available":
-			pkg_list = [i for i in self.packages_list if not i[1]]
-		elif sort_type == "installed":
-			pkg_list = [i for i in self.packages_list if i[1]]
-		elif sort_type == "altered":
-			pkg_list = [i for i in self.packages_list if i[0] != bool(i[1])]
-		else:
-			pkg_list = self.packages_list
+
+		pkg_list = {
+			"available": [i for i in self.packages_list if not i[1]],
+			"installed": [i for i in self.packages_list if i[1]],
+			"altered": [i for i in self.packages_list if i[0] != bool(i[1])]
+		}.get(sort_type, self.packages_list)
 	
-		if(keyword):
-			return [i for i in pkg_list if keyword.lower() in i[2].lower()]
-		else:
-			return pkg_list
+		return [i for i in pkg_list if keyword.lower() in i[2].lower()] if keyword else pkg_list
 
 	def simul_transaction(self, list_install, list_remove):
 		"""
