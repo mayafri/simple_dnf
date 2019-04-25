@@ -3,8 +3,6 @@
 import re
 import sys
 
-sys.path.append("/home/guillaume/programmation/python/projets/simple_dnf/simple_dnf")
-
 from simple_dnf import main
 
 if __name__ == '__main__':
