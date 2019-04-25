@@ -18,6 +18,9 @@
 # along with Simple DNF.  If not, see <https://www.gnu.org/licenses/>.
 
 import gtkapp
+import os
+
+os.chdir(os.path.dirname(__file__))
 
 def main():
 	app = gtkapp.Application()

@@ -44,7 +44,6 @@ class Backend(dnfdaemon.client.Client):
 		pkg_list_all.sort(key=itemgetter(2))
 		
 		for pkg in pkg_list_all:
-			print(pkg)
 			longname = pkg[2].split(',')
 			state = pkg[0]
 			icon = pkg[1]
@@ -52,7 +51,8 @@ class Backend(dnfdaemon.client.Client):
 			version = longname[2]+'-'+longname[3]
 			arch = longname[4]
 			repo = longname[5]
-			size = str(round(pkg[3]/1024/1024, 2))+" M"
+			_size = round(pkg[3]/1024/1024, 2)
+			size = str(_size) + " Mo" if _size >= 1 else str(int(pkg[3]/1024)) + " ko"
 			self.packages_list.append([state, icon, name, version, arch, repo, size])
 	
 	def alter_package(self, name, version, arch, new_check_bool):
