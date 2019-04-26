@@ -5,6 +5,9 @@ description = "Simple graphical utility for DNF package management"
 authors = ["Maya Friedrichs <mail@hyakosm.net>", "Arkelis <guillaume.fayard@pycolore.fr>"]
 license = "GPL-3.0+"
 
+[tool.poetry.scripts]
+simple-dnf = "simple_dnf:main.main"
+
 [tool.poetry.dependencies]
 python = "^3.7"
 
