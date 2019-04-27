@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Simple DNF.  If not, see <https://www.gnu.org/licenses/>.
 
-import gtkapp
+from simple_dnf import gtkapp
 import os
 
 os.chdir(os.path.dirname(__file__))
