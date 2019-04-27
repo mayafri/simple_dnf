@@ -15,10 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Simple DNF.  If not, see <https://www.gnu.org/licenses/>.
 
-import gi, backend, locale, os, dnfdaemon.client
+import gi, locale, os, dnfdaemon.client
 gi.require_version('Gtk', '3.0')
 from gi.repository import GLib, Gtk, Gio
 from locale import gettext as _
+
+from simple_dnf import backend
 
 locale.bindtextdomain('simple_dnf', 'locales')
 locale.textdomain('simple_dnf')
