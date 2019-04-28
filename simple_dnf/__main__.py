@@ -23,8 +23,8 @@ import os
 os.chdir(os.path.dirname(__file__))
 
 def main():
-	app = gtkapp.Application()
-	app.application_run()
+    app = gtkapp.Application()
+    app.application_run()
 
 if __name__ == "__main__":
-	main()
+    main()
