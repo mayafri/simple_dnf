@@ -6,7 +6,7 @@ authors = ["Hyacinthe Pierre Friedrichs <hyakosm@free.fr>", "Arkelis <guillaume.
 license = "GPL-3.0+"
 
 [tool.poetry.scripts]
-simple-dnf = "simple_dnf:__main__.main"
+simple-dnf = "simple_dnf.__main__:main"
 
 [tool.poetry.dependencies]
 python = "^3.7"
