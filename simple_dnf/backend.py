@@ -15,10 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Simple DNF.  If not, see <https://www.gnu.org/licenses/>.
 
-import dnfdaemon.client, locale
-from operator import itemgetter
-from locale import gettext as _
+import locale
 import platform
+from locale import gettext as _
+from operator import itemgetter
+
+import dnfdaemon.client
 
 MACHINE = platform.machine()
 
@@ -46,14 +48,15 @@ class Backend(dnfdaemon.client.Client):
 
         pkg_list_all.sort(key=itemgetter(2))
         
-        for pkg in pkg_list_all:
+        for i, pkg in enumerate(pkg_list_all):
             longname = pkg[2].split(',')
-            arch = longname[4]
-            if arch not in [MACHINE, "noarch"]:
-                continue
             state = pkg[0]
-            icon = pkg[1]
             name = longname[0]
+            arch = longname[4]
+            if not state:
+                if arch not in [MACHINE, "noarch"] and pkg_list_all[i+1][2].split(',')[0] == name:
+                    continue
+            icon = pkg[1]
             version = longname[2]+'-'+longname[3]
             repo = longname[5]
             _size = round(pkg[3]/1024/1024, 2)
