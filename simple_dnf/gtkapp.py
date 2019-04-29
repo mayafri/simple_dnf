@@ -21,11 +21,11 @@ from locale import gettext as _
 
 import dnfdaemon.client
 import gi
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gio, GLib, Gtk
 
 from simple_dnf import backend
 
-gi.require_version('Gtk', '3.0')
 
 
 locale.bindtextdomain('simple_dnf', 'locales')
