@@ -18,6 +18,9 @@
 import dnfdaemon.client, locale
 from operator import itemgetter
 from locale import gettext as _
+import platform
+
+MACHINE = platform.machine()
 
 class Backend(dnfdaemon.client.Client):
     def __init__(self):
@@ -45,11 +48,13 @@ class Backend(dnfdaemon.client.Client):
         
         for pkg in pkg_list_all:
             longname = pkg[2].split(',')
+            arch = longname[4]
+            if arch not in [MACHINE, "noarch"]:
+                continue
             state = pkg[0]
             icon = pkg[1]
             name = longname[0]
             version = longname[2]+'-'+longname[3]
-            arch = longname[4]
             repo = longname[5]
             _size = round(pkg[3]/1024/1024, 2)
             size = str(_size) + " Mo" if _size >= 1 else str(int(pkg[3]/1024)) + " ko"
