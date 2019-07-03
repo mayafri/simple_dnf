@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 # Copyright © 2018 Maya Friedrichs
 #
 # This file is part of Simple DNF.
