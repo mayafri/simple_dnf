@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 # Copyright © 2018 Maya Friedrichs
 #
 # This file is part of Simple DNF.
@@ -17,11 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with Simple DNF.  If not, see <https://www.gnu.org/licenses/>.
 
-import gtkapp
+from simple_dnf import gtkapp
+import os
+
+os.chdir(os.path.dirname(__file__))
 
 def main():
-	app = gtkapp.Application()
-	app.application_run()
+    app = gtkapp.Application()
+    app.application_run()
 
 if __name__ == "__main__":
-	main()
+    main()

@@ -55,6 +55,8 @@ https://hyakosm.net</property>
       <column type="gchararray"/>
       <!-- column-name arch -->
       <column type="gchararray"/>
+      <!-- column-name repository -->
+      <column type="gchararray"/>
       <!-- column-name size -->
       <column type="gchararray"/>
     </columns>

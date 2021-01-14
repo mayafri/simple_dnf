@@ -2,3 +2,5 @@
 .vscode
 __pycache__/
 /todo
+.python-version
+dist
